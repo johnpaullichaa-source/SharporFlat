@@ -3,11 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sharp or Flat</title>
 <style>
-:root{--bg:#f3f4fb;--sf:#fff;--tx:#10122a;--t2:#5a5f7d;--bd:#dfe2f1;--pu:#4f46e5;--pl:#dfe3ff;--mg:#0891b2;--ok:#059669;--no:#e11d48;--sh:#0891b2;--fl:#e11d48;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0e1f;--sf:#131a33;--tx:#eef1ff;--t2:#a0a9cc;--bd:#252f55;--pu:#818cf8;--pl:#2a3282;--mg:#22d3ee;--ok:#34d399;--no:#fb7185;--sh:#22d3ee;--fl:#fb7185;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0a0e1f;--sf:#131a33;--tx:#eef1ff;--t2:#a0a9cc;--bd:#252f55;--pu:#818cf8;--pl:#2a3282;--mg:#22d3ee;--ok:#34d399;--no:#fb7185;--sh:#22d3ee;--fl:#fb7185;color-scheme:dark}
+:root{--bg:#07080f;--sf:#151826;--tx:#f2f3fa;--t2:#9aa0bd;--bd:#262a3d;--pu:#8b5cf6;--pl:#2e2554;--mg:#22d3ee;--ok:#34d399;--no:#fb7185;--sh:#22d3ee;--fl:#fb7185;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#1b1640,var(--bg) 60%) fixed;color:var(--tx);font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
 [hidden]{display:none!important}
 .w{max-width:440px;margin:0 auto;padding:14px}
 h1{font-size:34px;margin:10px 0 4px;font-weight:800;letter-spacing:-.5px}
@@ -23,15 +21,22 @@ p{margin:4px 0;color:var(--t2);line-height:1.5}
 .lv{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
 .bar{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}
 .pill{background:var(--sf);border:1.5px solid var(--bd);border-radius:10px;padding:6px 12px;font-weight:700;min-width:60px;text-align:center}
-.bd{position:relative;height:256px;overflow:hidden;border:2px solid var(--pu);border-radius:16px;background:var(--bd)}
+.bd{position:relative;height:256px;overflow:hidden;border:3px solid #000;border-radius:14px 14px 0 0;background:#000;box-shadow:0 10px 30px #0008}
 #rw{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column-reverse;transition:transform .3s ease-out}
-.r{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;height:64px;box-sizing:border-box;border-bottom:2px solid var(--bd)}
-.r i{background:var(--sf)}
-.r i.t{background:var(--pu)}
-.r.hit i.t{background:var(--pl)}
-.ks{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:2px}
-.ks i{height:20px;background:var(--sf);border:1.5px solid var(--bd);border-radius:0 0 8px 8px;transition:background .1s}
-.ks i.on{background:var(--mg)}
+.r{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;height:64px;box-sizing:border-box;border-bottom:2px solid #000}
+.r i{background:linear-gradient(#fdfdf8,#e9e9e2)}
+.r i.t{background:linear-gradient(#2a2a2a,#050505);box-shadow:inset 0 -6px 0 #444}
+.r.hit i.t{background:linear-gradient(#6b6b6b,#3a3a3a);box-shadow:none}
+.ks{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:#000;padding:0 3px 3px;border-radius:0 0 12px 12px;height:78px}
+.ks i{background:linear-gradient(#fff,#e4e4dc);border-radius:0 0 7px 7px;transition:transform .08s,background .1s;box-shadow:inset 0 -5px 0 #c9c9c0;transform-origin:top}
+.ks i.on{background:linear-gradient(#d9f7ff,#9fe8f7);transform:scaleY(.96);box-shadow:inset 0 -2px 0 #7cc}
+.ks b{position:absolute;top:0;width:13%;height:48px;background:linear-gradient(#333,#000);border-radius:0 0 5px 5px;box-shadow:inset 0 -4px 0 #555,0 2px 3px #0009;z-index:2;transform:translateX(-50%);transition:transform .08s}
+.ks b.on{background:linear-gradient(#155e75,#062a35);transform:translateX(-50%) scaleY(.95)}
+#fc{position:fixed;right:12px;bottom:18px;width:120px;text-align:center;z-index:9;pointer-events:none;opacity:0;transform:translateY(30px) scale(.7);transition:opacity .25s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+#fc.show{opacity:1;transform:none}
+#fc img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--pu);background:#fff;box-shadow:0 8px 24px #000a}
+#fc span{display:block;margin-top:4px;background:var(--sf);border:1.5px solid var(--bd);border-radius:10px;padding:4px 6px;font-size:13px;font-weight:700}
+#ef{width:130px;height:130px;border-radius:50%;object-fit:cover;border:4px solid var(--pu);background:#fff;display:block;margin:10px auto}
 .q{margin-top:10px;background:var(--sf);border:1.5px solid var(--bd);border-radius:12px;padding:10px;text-align:center}
 #tbw{height:5px;background:var(--bd);border-radius:3px;overflow:hidden}
 #tb{height:5px;width:100%;background:var(--mg)}
@@ -65,7 +70,7 @@ input{font:inherit;flex:1;min-width:0;padding:10px;border:1.5px solid var(--bd);
 <div id="g" hidden>
 <div class="bar"><div class="pill" id="tm">1:00</div><div class="pill" id="cb">x1</div><div class="pill" id="sc">0</div></div>
 <div class="bd"><div id="rw"></div></div>
-<div class="ks"><i></i><i></i><i></i><i></i></div>
+<div class="ks"><i></i><i></i><i></i><i></i><b style="left:25%"></b><b style="left:50%"></b><b style="left:75%"></b></div>
 <div class="q">
 <div id="tbw"><div id="tb"></div></div>
 <div id="pr"></div><div id="hn"></div>
@@ -75,6 +80,7 @@ input{font:inherit;flex:1;min-width:0;padding:10px;border:1.5px solid var(--bd);
 </div>
 </div>
 <div id="e" hidden>
+<img id="ef" src="faces/happy.jpg" alt="">
 <h1 id="eh">Time's up</h1>
 <div class="big" id="es">0</div><p id="rm" style="font-weight:700"></p>
 <p id="eb" style="font-weight:700;color:var(--mg)"></p>
@@ -83,6 +89,8 @@ input{font:inherit;flex:1;min-width:0;padding:10px;border:1.5px solid var(--bd);
 <button class="btn" id="mn" style="width:100%;margin-top:8px">Change mode or level</button>
 </div>
 </div>
+<div id="fc" aria-hidden="true"><img alt=""><span></span></div>
+<audio id="song" src="audio/song.mp3" preload="auto"></audio>
 <script>
 const SHARP=150; // score needed to be sharp
 const TUNE=[64,64,65,67,67,65,64,62,60,60,62,64,64,62,62,64,64,65,67,67,65,64,62,60,60,62,64,62,60,60];
@@ -132,31 +140,36 @@ q={syms:[s],p:mc?'What is this '+k+' called?':'How many beats is this '+k+' wort
 return q}
 function ensure(n){while(rows.length<n){let l;do{l=Math.random()*4|0}while(l==lanes[lanes.length-1]);lanes.push(l);const r=document.createElement('div');r.className='r';r.innerHTML=[0,1,2,3].map(i=>`<i class="${i==l?'t':''}"></i>`).join('');$('rw').appendChild(r);rows.push(r)}}
 function mv(){ensure(S.step+6);$('rw').style.transform=`translateY(${S.step*64}px)`}
-function play(m){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.45);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.5)}
+const SONG=$('song');let songT;
+function play(){SONG.volume=.8;const p=SONG.play();if(p&&p.catch)p.catch(()=>{});clearTimeout(songT);songT=setTimeout(()=>SONG.pause(),2200)}
+let faceT;const FACES=['happy','excited','angry','unsure','nervous','worried','shocked'];FACES.forEach(k=>{new Image().src='faces/'+k+'.jpg'});
+function face(k,t,ms){const f=$('fc');f.querySelector('img').src='faces/'+k+'.jpg';f.querySelector('span').textContent=t;f.classList.add('show');clearTimeout(faceT);faceT=setTimeout(()=>f.classList.remove('show'),ms||1600)}
+function oldPlay(m){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.45);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.5)}
 function buzz(){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.value=110;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.2)}
 function hud(){$('sc').textContent=S.sc;$('cb').textContent='x'+Math.min(5,1+(S.st/3|0))}
 function say(t,c){$('fb').textContent=t;$('fb').style.color=c}
 function hs(v){const k='pkhi_'+S.mode+'_'+S.lv;try{if(v!=null){localStorage.setItem(k,v)}else return+localStorage.getItem(k)||0}catch(e){return 0}}
 function good(){const m=Math.min(5,1+(S.st/3|0)),p=10*m;S.st++;S.bs=Math.max(S.bs,S.st);S.co++;S.sc+=p;
 const r=rows[S.step],k=document.querySelectorAll('.ks i')[lanes[S.step]];r.classList.add('hit');k.classList.add('on');setTimeout(()=>k.classList.remove('on'),300);
-play(TUNE[S.step%TUNE.length]);S.step++;mv();hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
-function bad(msg){S.wr++;S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
+play();const bk=document.querySelectorAll('.ks b')[Math.min(2,lanes[S.step])];bk.classList.add('on');setTimeout(()=>bk.classList.remove('on'),250);S.wrun=0;if(S.st%3==0)face('excited',S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;mv();hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
+function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face('shocked','Too slow!');else face(S.wrun>=3?'angry':S.wrun==2?'worried':'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
 function miss(){bad("Time's up!");if(S.step>0){S.step--;rows[S.step].classList.remove('hit');mv()}nq()}
 function check(v){const q=S.q,n=pn(v);if(n!==null)return Math.abs(n-q.a)<1e-9;return!!q.nm&&q.nm.includes(norm(v))}
 function nq(){const q=S.q=gen();$('st').innerHTML=q.syms.length?draw(q.syms,q.gap):'';$('pr').textContent=q.p;$('hn').textContent=tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'';
-S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';
+S.qw=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';
 if(S.mode=='mc'){a.className='opts';a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
 else{a.className='';a.innerHTML='<div class="row"><input id="in" type="text" autocomplete="off" aria-label="Your answer" placeholder="Type your answer"><button class="btn go" style="margin:0;width:auto;font-size:16px;padding:8px 16px" id="en">Enter</button></div><div id="er"></div>';
 $('en').onclick=sub;$('in').onkeydown=e=>{if(e.key=='Enter')sub();else $('er').textContent=''};$('in').focus()}}
 function sub(){const v=$('in').value.trim();if(!v){$('er').textContent='Enter an answer first';return}if(check(v))good();else{bad('Not quite, try again');$('in').value='';$('in').focus()}}
 function pickO(o,b){if(o.v==S.q.a)good();else{bad('Not quite, try again');b.classList.add('x');b.disabled=true}}
-function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';
-if(S.qEnd){const f=(S.qEnd-now)/(S.qt*1000);$('tb').style.width=Math.max(0,f*100)+'%';if(f<=0)miss()}}
+function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';if(s==10&&!S.w10){S.w10=1;face('nervous','10 seconds left!',2000)}
+if(S.qEnd){const f=(S.qEnd-now)/(S.qt*1000);$('tb').style.width=Math.max(0,f*100)+'%';if(f<.3&&!S.qw){S.qw=1;face('nervous','Hurry!',1200)}if(f<=0)miss()}}
 function start(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume();
-Object.assign(S,{sc:0,co:0,wr:0,st:0,bs:0,step:0,qt:LV[S.lv].qt,endT:Date.now()+60000});rows=[];lanes=[];$('rw').innerHTML='';$('rw').style.transition='none';mv();void $('rw').offsetWidth;$('rw').style.transition='';
-$('m').hidden=$('e').hidden=true;$('g').hidden=false;hud();say('','');nq();clearInterval(iv);iv=setInterval(tick,100);tick()}
+SONG.pause();try{SONG.currentTime=0}catch(e){}SONG.play().then(()=>SONG.pause()).catch(()=>{});
+Object.assign(S,{wrun:0,w10:0,qw:0,sc:0,co:0,wr:0,st:0,bs:0,step:0,qt:LV[S.lv].qt,endT:Date.now()+60000});rows=[];lanes=[];$('rw').innerHTML='';$('rw').style.transition='none';mv();void $('rw').offsetWidth;$('rw').style.transition='';
+$('m').hidden=$('e').hidden=true;$('g').hidden=false;hud();say('','');nq();face('happy','Let\'s play!');clearInterval(iv);iv=setInterval(tick,100);tick()}
 function end(){clearInterval(iv);let b=0;const tot=S.co+S.wr;if(S.wr==0&&S.co>=5)b=50;S.sc+=b;const old=hs(),nw=S.sc>old;if(nw)hs(S.sc);
-$('g').hidden=true;$('e').hidden=false;$('es').textContent=S.sc;const sp=S.sc>=SHARP;$('eh').innerHTML=sp?'You are <span class="sh">sharp ♯</span>':'You are <span class="fl">flat ♭</span>';$('rm').textContent=sp?'Great note reading!':'Keep practising. Score '+SHARP+' or more to be sharp.';$('eb').textContent=(b?'Perfect run bonus: +50. ':'')+(nw?'New high score!':'');
+$('g').hidden=true;$('e').hidden=false;clearTimeout(songT);SONG.pause();$('fc').classList.remove('show');$('es').textContent=S.sc;const sp=S.sc>=SHARP;$('ef').src='faces/'+(sp?'excited':S.sc>=SHARP/2?'unsure':'worried')+'.jpg';$('eh').innerHTML=sp?'You are <span class="sh">sharp ♯</span>':'You are <span class="fl">flat ♭</span>';$('rm').textContent=sp?'Great note reading!':'Keep practising. Score '+SHARP+' or more to be sharp.';$('eb').textContent=(b?'Perfect run bonus: +50. ':'')+(nw?'New high score!':'');
 $('ed').innerHTML=`<div>Correct<b>${S.co}</b></div><div>Accuracy<b>${tot?Math.round(S.co/tot*100):0}%</b></div><div>Best combo<b>${S.bs}</b></div><div>High score<b>${Math.max(old,S.sc)}</b></div>`}
 function menu(){$('m').hidden=false;$('e').hidden=$('g').hidden=true;info()}
 function info(){$('ip').textContent='Name the note value to move the tiles and play the tune. Score '+SHARP+' or more in 1 minute to be sharp. Score less and you are flat.';$('ld').textContent=LV[S.lv].d;$('bs').textContent='High score: '+hs()}
