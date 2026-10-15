@@ -84,10 +84,16 @@ input{border:3px solid var(--bd);background:#fff}
 .st div{border:3px solid var(--bd);background:#fff;box-shadow:0 3px 0 var(--bd)}
 #fc img,#ef{border:4px solid var(--bd);box-shadow:0 0 0 4px var(--gd),0 8px 18px #0007}
 #fc span{border:3px solid var(--bd);background:var(--gd)}
+.hero{text-align:center;margin:6px 0}.hero img{height:210px;max-width:100%;object-fit:cover;object-position:top;border:4px solid var(--bd);border-radius:18px;box-shadow:0 0 0 4px var(--gd),0 6px 0 4px var(--bd);background:#fff}
+.crew{display:flex;justify-content:center;gap:8px;margin:12px 0 6px}.crew img{width:62px;height:62px;border-radius:50%;object-fit:cover;border:3px solid var(--bd);box-shadow:0 0 0 3px var(--gd);animation:bob 2.4s ease-in-out infinite}
+.crew img:nth-child(2){animation-delay:.3s}.crew img:nth-child(3){animation-delay:.6s}.crew img:nth-child(4){animation-delay:.9s}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
 </style></head><body>
 <div class="w">
 <div id="m">
 <h1><span class="sh">Sharp</span> or <span class="fl">Flat</span></h1>
+<div class="hero"><img src="faces/hero.jpg" alt="Sharp or Flat host"></div>
+<div class="crew"><img src="faces/joy.jpg" alt=""><img src="faces/think.jpg" alt=""><img src="faces/surprise.jpg" alt=""><img src="faces/furious.jpg" alt=""></div>
 <p id="ip"></p>
 <h2>Game mode</h2>
 <div class="g2" id="mo"><button class="btn sel" data-v="type">Type it in</button><button class="btn" data-v="mc">Multiple choice</button></div>
@@ -201,7 +207,7 @@ function ensure(n){while(rows.length<n){let l;do{l=Math.random()*4|0}while(l==la
 function mv(){ensure(S.step+6);$('rw').style.transform=`translateY(${S.step*64}px)`}
 const SONG=$('song');let songT;
 function play(){SONG.volume=.8;const p=SONG.play();if(p&&p.catch)p.catch(()=>{});clearTimeout(songT);songT=setTimeout(()=>SONG.pause(),2200)}
-let faceT;const FACES=['happy','excited','angry','unsure','nervous','worried','shocked'];FACES.forEach(k=>{new Image().src='faces/'+k+'.jpg'});
+let faceT;const FACES=['happy','excited','angry','unsure','nervous','worried','shocked','joy','sad','think','furious','bored','surprise','hero'];FACES.forEach(k=>{new Image().src='faces/'+k+'.jpg'});
 function face(k,t,ms){const f=$('fc');f.querySelector('img').src='faces/'+k+'.jpg';f.querySelector('span').textContent=t;f.classList.add('show');clearTimeout(faceT);faceT=setTimeout(()=>f.classList.remove('show'),ms||1600)}
 function oldPlay(m){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.45);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.5)}
 function buzz(){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.value=110;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.2)}
@@ -210,25 +216,26 @@ function say(t,c){$('fb').textContent=t;$('fb').style.color=c}
 function hs(v){const k='pkhi_'+S.mode+'_'+S.lv;try{if(v!=null){localStorage.setItem(k,v)}else return+localStorage.getItem(k)||0}catch(e){return 0}}
 function good(){const m=Math.min(5,1+(S.st/3|0)),p=10*m;S.st++;S.bs=Math.max(S.bs,S.st);S.co++;S.sc+=p;
 const r=rows[S.step],k=document.querySelectorAll('.ks i')[lanes[S.step]];r.classList.add('hit');k.classList.add('on');setTimeout(()=>k.classList.remove('on'),300);
-play();const bk=document.querySelectorAll('.ks b')[Math.min(2,lanes[S.step])];bk.classList.add('on');setTimeout(()=>bk.classList.remove('on'),250);S.wrun=0;if(S.st%3==0)face('excited',S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;mv();hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
-function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face('shocked','Too slow!');else face(S.wrun>=3?'angry':S.wrun==2?'worried':'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
+play();const bk=document.querySelectorAll('.ks b')[Math.min(2,lanes[S.step])];bk.classList.add('on');setTimeout(()=>bk.classList.remove('on'),250);S.wrun=0;if(S.st%3==0)face(R(['excited','joy','hero']),S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;mv();hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
+function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face(R(['shocked','surprise']),'Too slow!');else face(S.wrun>=3?R(['angry','furious']):S.wrun==2?R(['worried','sad']):'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
 function miss(){bad("Time's up!");if(S.step>0){S.step--;rows[S.step].classList.remove('hit');mv()}nq()}
 function check(v){const q=S.q,n=pn(v);if(n!==null)return Math.abs(n-q.a)<1e-9;return!!q.nm&&q.nm.includes(norm(v))}
 function nq(){const q=S.q=gen();$('st').innerHTML=q.svg||(q.syms.length?draw(q.syms,q.gap):'');$('pr').textContent=q.p;$('hn').textContent=q.svg?'':tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'';
-S.qw=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';
+S.qw=0;S.qStart=Date.now();S.idle=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';
 if(S.mode=='mc'){a.className='opts';a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
 else{a.className='';a.innerHTML='<div class="row"><input id="in" type="text" autocomplete="off" aria-label="Your answer" placeholder="Type your answer"><button class="btn go" style="margin:0;width:auto;font-size:16px;padding:8px 16px" id="en">Enter</button></div><div id="er"></div>';
 $('en').onclick=sub;$('in').onkeydown=e=>{if(e.key=='Enter')sub();else $('er').textContent=''};$('in').focus()}}
 function sub(){const v=$('in').value.trim();if(!v){$('er').textContent='Enter an answer first';return}if(check(v))good();else{bad('Not quite, try again');$('in').value='';$('in').focus()}}
 function pickO(o,b){if(o.v==S.q.a)good();else{bad('Not quite, try again');b.classList.add('x');b.disabled=true}}
-function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';if(s==10&&!S.w10){S.w10=1;face('nervous','10 seconds left!',2000)}
+function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';const id=now-S.qStart;if(S.idle==0&&id>4000){S.idle=1;face('think','Think it through...',1500)}else if(S.idle==1&&id>9000){S.idle=2;face('bored','Still waiting...',1500)}
+if(s==10&&!S.w10){S.w10=1;face('nervous','10 seconds left!',2000)}
 if(S.qEnd){const f=(S.qEnd-now)/(S.qt*1000);$('tb').style.width=Math.max(0,f*100)+'%';if(f<.3&&!S.qw){S.qw=1;face('nervous','Hurry!',1200)}if(f<=0)miss()}}
 function start(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume();
 SONG.pause();try{SONG.currentTime=0}catch(e){}SONG.play().then(()=>SONG.pause()).catch(()=>{});
 Object.assign(S,{wrun:0,w10:0,qw:0,sc:0,co:0,wr:0,st:0,bs:0,step:0,qt:LV[S.lv].qt,endT:Date.now()+60000});rows=[];lanes=[];$('rw').innerHTML='';$('rw').style.transition='none';mv();void $('rw').offsetWidth;$('rw').style.transition='';
 $('m').hidden=$('e').hidden=true;$('g').hidden=false;hud();say('','');nq();face('happy','Let\'s play!');clearInterval(iv);iv=setInterval(tick,100);tick()}
 function end(){clearInterval(iv);let b=0;const tot=S.co+S.wr;if(S.wr==0&&S.co>=5)b=50;S.sc+=b;const old=hs(),nw=S.sc>old;if(nw)hs(S.sc);
-$('g').hidden=true;$('e').hidden=false;clearTimeout(songT);SONG.pause();$('fc').classList.remove('show');$('es').textContent=S.sc;const sp=S.sc>=SHARP;$('ef').src='faces/'+(sp?'excited':S.sc>=SHARP/2?'unsure':'worried')+'.jpg';$('eh').innerHTML=sp?'You are <span class="sh">sharp ♯</span>':'You are <span class="fl">flat ♭</span>';$('rm').textContent=sp?'Great note reading!':'Keep practising. Score '+SHARP+' or more to be sharp.';$('eb').textContent=(b?'Perfect run bonus: +50. ':'')+(nw?'New high score!':'');
+$('g').hidden=true;$('e').hidden=false;clearTimeout(songT);SONG.pause();$('fc').classList.remove('show');$('es').textContent=S.sc;const sp=S.sc>=SHARP;$('ef').src='faces/'+(sp?R(['hero','joy','excited']):S.sc>=SHARP/2?'think':'sad')+'.jpg';$('eh').innerHTML=sp?'You are <span class="sh">sharp ♯</span>':'You are <span class="fl">flat ♭</span>';$('rm').textContent=sp?'Great note reading!':'Keep practising. Score '+SHARP+' or more to be sharp.';$('eb').textContent=(b?'Perfect run bonus: +50. ':'')+(nw?'New high score!':'');
 $('ed').innerHTML=`<div>Correct<b>${S.co}</b></div><div>Accuracy<b>${tot?Math.round(S.co/tot*100):0}%</b></div><div>Best combo<b>${S.bs}</b></div><div>High score<b>${Math.max(old,S.sc)}</b></div>`}
 function menu(){$('m').hidden=false;$('e').hidden=$('g').hidden=true;info()}
 function info(){$('ip').textContent='Name the note value to move the tiles and play the tune. Score '+SHARP+' or more in 1 minute to be sharp. Score less and you are flat.';$('ld').textContent=LV[S.lv].d;$('bs').textContent='High score: '+hs()}
