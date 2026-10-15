@@ -101,7 +101,7 @@ const NV=[[4,2,1],[4,2,1,.5,.25],[4,2,1,.5,.25,3,1.5],[4,2,1,.5,.25,3,1.5]],RV=[
 let S={mode:'type',lv:'easy'},AC,rows=[],lanes=[],iv;
 const cap=s=>s[0].toUpperCase()+s.slice(1);
 const lab=s=>{const n=NM[s.v];return cap(n[0])+(s.t=='r'?' rest':' note')+' ('+n[1]+(s.t=='r'?' rest':'')+')'};
-const norm=s=>s.toLowerCase().replace(/notes?/g,'').replace(/[^a-z0-9]/g,'');
+const norm=s=>s.toLowerCase().replace(/notes?|signs?$/g,'').replace(/[^a-z0-9]/g,'');
 const fb=v=>{const w=Math.floor(v),f=v-w,s=(w||'')+(f==.5?'½':f==.25?'¼':f==.75?'¾':'');return s+(v<=1?' beat':' beats')};
 const W={one:1,two:2,three:3,four:4};
 function pn(s){s=s.toLowerCase().replace(/beats?|counts?/g,'').trim();if(W[s])return W[s];let m;if(m=s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/))return +m[1]+m[2]/m[3];if(m=s.match(/^(\d+)\s*\/\s*(\d+)$/))return m[1]/m[2];return/^\d*\.?\d+$/.test(s)?parseFloat(s):null}
@@ -128,7 +128,27 @@ function tier(){return S.lv=='adaptive'?Math.min(3,Math.floor(S.co/4)):LV[S.lv].
 function optN(){return S.lv=='adaptive'?(tier()>=2?6:4):LV[S.lv].o}
 function near(t,n){const c=[...new Set([t-1,t+1,t-.5,t+.5,t+2,t-2,t*2].filter(v=>v>0&&v!=t))];return sh([t,...sh(c).slice(0,n-1)])}
 function pick(a,n,ex){return sh([a,...sh(ex.filter(v=>v!=a)).slice(0,n-1)])}
-function gen(){const t=tier(),n=optN(),mc=S.mode=='mc',x=Math.random(),nv=NV[t];let q;
+
+const STF=(w)=>{let g='';for(let i=0;i<5;i++)g+=`<line x1="4" x2="${w-4}" y1="${15+i*10}" y2="${15+i*10}" style="stroke:var(--t2)" stroke-width="1"/>`;return g};
+const SY={
+pause:{n:'Pause',a:['pause','fermata'],o:['Treble clef','Semibreve'],g:()=>STF(90)+'<path d="M30 12a15 15 0 0 1 30 0" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="45" cy="9" r="3" fill="currentColor"/>'},
+treble:{n:'Treble clef',a:['trebleclef','treble','gclef'],o:['Bass clef','Natural'],g:()=>STF(90)+'<text x="45" y="58" font-size="62" text-anchor="middle" fill="currentColor">\u{1D11E}</text>'},
+bass:{n:'Bass clef',a:['bassclef','bass','fclef'],o:['Treble clef','Quaver'],g:()=>STF(90)+'<text x="45" y="52" font-size="50" text-anchor="middle" fill="currentColor">\u{1D122}</text>'},
+brace:{n:'Brace',a:['brace'],o:['Bass clef','Slur'],g:()=>'<path d="M24 4q-10 0-8 14t-8 17q10 3 8 17t8 14" fill="none" stroke="currentColor" stroke-width="3"/>'+[0,1,2,3,4].map(i=>`<line x1="30" x2="86" y1="${6+i*5}" y2="${6+i*5}" style="stroke:var(--t2)"/><line x1="30" x2="86" y1="${44+i*5}" y2="${44+i*5}" style="stroke:var(--t2)"/>`).join(''),h:70},
+natural:{n:'Natural',a:['natural'],o:['Quaver','Flat'],g:()=>STF(90)+'<text x="45" y="52" font-size="44" text-anchor="middle" fill="currentColor">\u266E</text>'},
+flat:{n:'Flat',a:['flat'],o:['Natural','Crotchet'],g:()=>STF(90)+'<text x="45" y="50" font-size="44" text-anchor="middle" fill="currentColor">\u266D</text>'},
+sharp:{n:'Sharp',a:['sharp'],o:['Natural','Repeat sign'],g:()=>STF(90)+'<text x="45" y="52" font-size="44" text-anchor="middle" fill="currentColor">\u266F</text>'},
+tie:{n:'Tie',a:['tie'],o:['Semibreve','Slur'],g:()=>STF(110)+sym({t:'n',v:2},35,1)+sym({t:'n',v:2},80,1)+'<path d="M30 30q22 -12 46 0" fill="none" stroke="currentColor" stroke-width="2.5"/>'},
+slur:{n:'Slur',a:['slur'],o:['Tie','Brace'],g:()=>STF(110)+sym({t:'n',v:2},35,0)+sym({t:'n',v:2},80,3)+'<path d="M30 52q10 -45 52 -32" fill="none" stroke="currentColor" stroke-width="2.5"/>'},
+repeat:{n:'Repeat sign',a:['repeat'],o:['Quaver','Minim rest'],g:()=>STF(90)+'<circle cx="62" cy="30" r="3" fill="currentColor"/><circle cx="62" cy="40" r="3" fill="currentColor"/><line x1="72" x2="72" y1="15" y2="55" stroke="currentColor" stroke-width="2"/><line x1="80" x2="80" y1="15" y2="55" stroke="currentColor" stroke-width="5"/>'},
+staff:{n:'Staff',a:['staff','stave'],o:['Tie','Bar lines'],g:()=>STF(110)},
+barline:{n:'Bar line',a:['barline','barlines','bar'],o:['Staff','Double bar line'],g:()=>STF(130)+[40,90].map(x=>`<line x1="${x}" x2="${x}" y1="15" y2="55" stroke="currentColor" stroke-width="2"/>`).join('')}
+};
+function symQ(mc){const k=R(Object.keys(SY)),y=SY[k],n=optN(),pool=Object.values(SY).map(z=>z.n).filter(z=>z!=y.n&&!y.o.includes(z));
+const opts=sh([y.n,...y.o,...sh(pool)].slice(0,Math.max(3,n)));
+return{svg:`<svg viewBox="0 0 ${k=='slur'||k=='tie'||k=='staff'?110:k=='barline'?130:90} ${y.h||70}" role="img" aria-label="Music symbol">${y.g()}</svg>`,syms:[],p:mc?'What is this symbol called?':'Type the name of this symbol',a:y.n,nm:y.a,o:opts.map(v=>({v,txt:v}))}}
+
+function gen(){const t=tier(),n=optN(),mc=S.mode=='mc',x=Math.random(),nv=NV[t];let q;if(Math.random()<.3)return symQ(mc);
 if(t>=2&&x<.3){const k=R([2,3]),ss=[];let tot=0;for(let i=0;i<k;i++){const s={t:Math.random()<.2?'r':'n',v:R(nv)};ss.push(s);tot+=s.v}
 q={syms:ss,p:'What is the total number of beats?',a:tot,o:near(tot,n).map(v=>({v,txt:fb(v)}))}}
 else if(t==3&&x<.55){const m=R([1,2,3]);let rem=4-m,ss=[];while(rem>0){const v=rem>=2&&Math.random()<.5?2:1;ss.push({t:'n',v});rem-=v}
@@ -155,7 +175,7 @@ play();const bk=document.querySelectorAll('.ks b')[Math.min(2,lanes[S.step])];bk
 function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face('shocked','Too slow!');else face(S.wrun>=3?'angry':S.wrun==2?'worried':'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
 function miss(){bad("Time's up!");if(S.step>0){S.step--;rows[S.step].classList.remove('hit');mv()}nq()}
 function check(v){const q=S.q,n=pn(v);if(n!==null)return Math.abs(n-q.a)<1e-9;return!!q.nm&&q.nm.includes(norm(v))}
-function nq(){const q=S.q=gen();$('st').innerHTML=q.syms.length?draw(q.syms,q.gap):'';$('pr').textContent=q.p;$('hn').textContent=tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'';
+function nq(){const q=S.q=gen();$('st').innerHTML=q.svg||(q.syms.length?draw(q.syms,q.gap):'');$('pr').textContent=q.p;$('hn').textContent=q.svg?'':tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'';
 S.qw=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';
 if(S.mode=='mc'){a.className='opts';a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
 else{a.className='';a.innerHTML='<div class="row"><input id="in" type="text" autocomplete="off" aria-label="Your answer" placeholder="Type your answer"><button class="btn go" style="margin:0;width:auto;font-size:16px;padding:8px 16px" id="en">Enter</button></div><div id="er"></div>';
