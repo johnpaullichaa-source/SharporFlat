@@ -95,7 +95,7 @@ input{border:3px solid var(--bd);background:#fff}
 .crew img:nth-child(2){animation-delay:.3s}.crew img:nth-child(3){animation-delay:.6s}.crew img:nth-child(4){animation-delay:.9s}
 @keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
 </style>
-<link rel="stylesheet" href="curriculum.css?v=20261020-study3">
+<link rel="stylesheet" href="curriculum.css?v=20261020-revision4">
 </head><body>
 <div class="w">
 <div id="m">
@@ -104,23 +104,43 @@ input{border:3px solid var(--bd);background:#fff}
 <div class="crew"><img src="faces/joy.jpg" alt=""><img src="faces/think.jpg" alt=""><img src="faces/surprise.jpg" alt=""><img src="faces/furious.jpg" alt=""></div>
 <p id="ip"></p>
 <p class="mode-note">Multiple-choice music challenge</p>
+<div class="curriculum-fields">
+<label>Activity<select id="activity"><option value="challenge">Timed challenge</option><option value="revision">Revision practice</option><option value="worksheet">Create a worksheet</option></select></label>
+<label id="challenge-duration-field">Round length<select id="duration"><option value="1">1 minute</option><option value="2">2 minutes</option><option value="4">4 minutes</option></select></label>
+<label id="revision-duration-field" hidden>Revision timer<select id="revision-duration"><option value="0">No timer · practise at your own pace</option><option value="1">1 minute</option><option value="2">2 minutes</option><option value="4">4 minutes</option></select></label>
+</div>
 <h2>Level</h2>
 <div class="lv" id="lv"><button class="btn sel" data-v="easy">Easy</button><button class="btn" data-v="medium">Medium</button><button class="btn" data-v="hard">Hard</button><button class="btn" data-v="expert">Expert</button><button class="btn" data-v="adaptive">Adaptive</button></div>
 <p id="ld"></p>
 <div class="curriculum-fields">
-<label>Practice topic<select id="topic">
+<label id="single-topic-field">Practice topic<select id="topic">
 <option value="mixed">Mixed music quiz</option><option value="pitch">Note identification · staff + middle C</option>
 <option value="rhythm">Note values and rhythm</option><option value="symbols">Music symbols</option>
 <option value="dynamics">Dynamics</option><option value="expression">10 expressive techniques</option>
 <option value="vocabulary">Elements of music · definitions</option>
 </select></label>
+<fieldset id="practice-topics" hidden><legend>Choose what to practise</legend>
+<div class="topic-actions"><button type="button" class="btn" id="topics-all">Select all</button><button type="button" class="btn" id="topics-none">Clear</button></div>
+<label class="check"><input class="practice-topic" type="checkbox" value="pitch" checked>Note identification</label>
+<label class="check"><input class="practice-topic" type="checkbox" value="rhythm" checked>Note values and rhythm</label>
+<label class="check"><input class="practice-topic" type="checkbox" value="symbols" checked>Music symbols</label>
+<label class="check"><input class="practice-topic" type="checkbox" value="dynamics" checked>Dynamics</label>
+<label class="check"><input class="practice-topic" type="checkbox" value="expression" checked>Expressive techniques</label>
+<label class="check"><input class="practice-topic" type="checkbox" value="vocabulary" checked>Elements of music and definitions</label>
+</fieldset>
 <label>Learning focus<select id="stage"><option value="4">Stage 4 · Years 7–8 foundations</option><option value="5">Stage 5 · Years 9–10 + foundations</option></select></label>
 <fieldset id="pitch-settings"><legend>Note-reading settings</legend>
 <label>Clef<select id="clef"><option value="both">Treble and bass</option><option value="treble">Treble only</option><option value="bass">Bass only</option></select></label>
 <label class="check"><input id="octaves" type="checkbox">Include octave numbers in answers</label>
 <p class="setting-note">Only notes on the five-line staff, plus middle C (C4). Treble: E4–F5 plus C4. Bass: G2–A3 plus C4. No other ledger-line notes. Turn on octave numbers for extra challenge.</p>
 </fieldset>
+<fieldset id="worksheet-settings" hidden><legend>Worksheet settings</legend>
+<label for="worksheet-count">Number of questions (1–20)</label><input id="worksheet-count" type="number" min="1" max="20" step="1" value="20" inputmode="numeric">
+<label class="check"><input id="worksheet-key" type="checkbox">Include an answer key on separate pages</label>
+<p class="setting-note">The PDF uses your selected topics, learning focus, level and clef settings. Small topic banks may repeat concepts.</p>
+</fieldset>
 </div>
+<p id="activity-help" class="setting-note"></p><p id="setup-error" role="status" class="form-error"></p>
 <p id="bs" style="font-weight:700;color:var(--tx)"></p>
 <button class="btn go" id="sb">Start</button>
 <details class="study"><summary>Study the words and symbols</summary>
@@ -145,8 +165,8 @@ input{border:3px solid var(--bd);background:#fff}
 <div id="g" hidden>
 <div class="arcade-hud" aria-label="Game controls and status">
 <button class="btn" id="quit">← Back</button>
-<div class="timer-readout"><span>TIME LEFT</span><div id="tm" role="timer" aria-label="Time remaining">1:00</div></div>
-<div class="score-readout"><span>SCORE / 300</span><div><b id="sc">0</b> <b id="cb">x1</b></div></div>
+<div class="timer-readout"><span id="timer-label">TIME LEFT</span><div id="tm" role="timer" aria-label="Time remaining">1:00</div></div>
+<div class="score-readout"><span id="score-label">SCORE / 300</span><div><b id="sc">0</b> <b id="cb">x1</b></div></div>
 </div>
 <div class="arcade-marquee" aria-hidden="true"><span>♫</span><span>SHARP OR FLAT</span><span>♪</span></div>
 <div class="q arcade-screen">
@@ -160,9 +180,16 @@ input{border:3px solid var(--bd);background:#fff}
 <div class="answer-label" id="answer-label">YOUR ANSWER</div>
 <div id="an"></div>
 <div id="fb" aria-live="polite"></div>
+<div id="revision-tools" hidden><p id="revision-explanation" aria-live="polite"></p><button class="btn" id="reveal-answer">Show answer</button><button class="btn go" id="next-question" hidden>Next question</button><button class="btn" id="finish-revision">Finish revision</button></div>
 <button class="btn back-bottom" id="quit-bottom">← Back to menu</button>
 </div>
 </div>
+<section id="worksheet-view" hidden aria-label="Worksheet preview">
+<div class="worksheet-toolbar"><button class="btn" id="worksheet-back">← Back</button><button class="btn go" id="worksheet-download">Download PDF</button></div>
+<h2>Your music worksheet</h2><p id="worksheet-meta"></p><p class="setting-note">Review the questions below, then download your printable PDF. On iPhone, use the PDF viewer’s Share menu to save or print it.</p>
+<p id="pdf-status" role="status"></p><p id="pdf-ready" hidden><a id="pdf-open" target="_blank" rel="noopener">Open or save the PDF</a></p>
+<div id="worksheet-preview"></div>
+</section>
 <div id="e" hidden>
 <img id="ef" src="faces/happy.jpg" alt="">
 <h1 id="eh">Time's up</h1>
@@ -176,7 +203,8 @@ input{border:3px solid var(--bd);background:#fff}
 <div id="fc" aria-hidden="true"><img alt=""><span></span></div>
 <audio id="song" src="audio/song.mp3" preload="auto" loop></audio>
 <p id="audio-notice" role="status" hidden>Music could not start. <button id="audio-retry" class="btn">Play music</button></p>
-<script src="curriculum.js?v=20261020-study3"></script>
+<script src="curriculum.js?v=20261020-revision4"></script>
+<script src="revision.js?v=20261020-revision4"></script>
 <script>
 const SHARP=300; // score needed to be sharp
 const TUNE=[64,64,65,67,67,65,64,62,60,60,62,64,64,62,62,64,64,65,67,67,65,64,62,60,60,62,64,62,60,60];
@@ -265,32 +293,32 @@ let faceT;const FACES=['happy','excited','angry','unsure','nervous','worried','s
 function face(k,t,ms){const f=$('fc');f.querySelector('img').src='faces/'+k+'.jpg';f.querySelector('span').textContent=t;f.classList.add('show');clearTimeout(faceT);faceT=setTimeout(()=>f.classList.remove('show'),ms||1600)}
 function oldPlay(m){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.45);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.5)}
 function buzz(){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.value=110;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.2)}
-function hud(){$('sc').textContent=S.sc;$('cb').textContent='x'+Math.min(5,1+(S.st/3|0))}
+function hud(){$('sc').textContent=S.revision?S.co:S.sc;$('cb').textContent=S.revision?'done':'x'+Math.min(5,1+(S.st/3|0))}
 function say(t,c){$('fb').textContent=t;$('fb').style.color=c}
-function hs(v){const k='pkhi_'+S.mode+'_'+S.lv;try{if(v!=null){localStorage.setItem(k,v)}else return+localStorage.getItem(k)||0}catch(e){return 0}}
+function hs(v){const minutes=$('duration').value;const k='pkhi_'+S.mode+'_'+S.lv+(minutes==='1'?'':'_'+minutes+'min');try{if(v!=null){localStorage.setItem(k,v)}else return+localStorage.getItem(k)||0}catch(e){return 0}}
 function good(){const m=Math.min(5,1+(S.st/3|0)),p=10*m;S.st++;S.bs=Math.max(S.bs,S.st);S.co++;S.sc+=p;
-S.wrun=0;if(S.st%3==0)face(R(['excited','joy','hero']),S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
-function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face(R(['shocked','surprise']),'Too slow!');else face(S.wrun>=3?R(['angry','furious']):S.wrun==2?R(['worried','sad']):'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
+S.wrun=0;if(S.st%3==0)face(R(['excited','joy','hero']),S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;hud();say(S.revision?'Correct!':'Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');if(S.revision)resolveRevision(false);else nq()}
+function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face(R(['shocked','surprise']),'Too slow!');else face(S.wrun>=3?R(['angry','furious']):S.wrun==2?R(['worried','sad']):'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;const pen=S.revision?0:LV[S.lv].pen;if(S.endT)S.endT-=pen*1000;buzz();hud();say(msg+(pen?' -'+pen+'s':''),'var(--no)')}
 function miss(){bad("Time's up!");nq()}
-function nq(){const q=S.q=gen();$('st').innerHTML=q.svg||(q.syms.length?draw(q.syms,q.gap):'');$('pr').textContent=q.p;$('hn').textContent=q.hint||(q.svg?'':tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'');
+function nq(){S.resolved=false;$('revision-explanation').textContent='';$('next-question').hidden=true;$('reveal-answer').hidden=false;const q=S.q=gen();$('st').innerHTML=q.svg||(q.syms.length?draw(q.syms,q.gap):'');$('pr').textContent=q.p;$('hn').textContent=q.hint||(q.svg?'':tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'');
 S.qw=0;S.qStart=Date.now();S.idle=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';$('answer-label').textContent='CHOOSE YOUR ANSWER';
-a.className='opts'+(q.longOptions?' long-options':'');a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
+a.className='opts'+(q.longOptions?' long-options':'');a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>{if(S.q===q&&!S.resolved)pickO(o,b)};a.appendChild(b)})}
 function pickO(o,b){if(o.v==S.q.a)good();else{bad('Not quite, try again');b.classList.add('x');b.disabled=true}}
-function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';const id=now-S.qStart;if(S.idle==0&&id>4000){S.idle=1;face('think','Think it through...',1500)}else if(S.idle==1&&id>9000){S.idle=2;face('bored','Still waiting...',1500)}
+function tick(){const now=Date.now(),l=S.endT?S.endT-now:null;if(l!==null&&l<=0){end();return}const s=l===null?null:Math.ceil(l/1000);$('tm').textContent=s===null?'Untimed':Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s!==null&&s<=10?'var(--no)':'';const id=now-S.qStart;if(!S.revision&&S.idle==0&&id>4000){S.idle=1;face('think','Think it through...',1500)}else if(!S.revision&&S.idle==1&&id>9000){S.idle=2;face('bored','Still waiting...',1500)}
 if(s==10&&!S.w10){S.w10=1;face('nervous','10 seconds left!',2000)}
 if(S.qEnd){const f=(S.qEnd-now)/(S.qt*1000);$('tb').style.width=Math.max(0,f*100)+'%';if(f<.3&&!S.qw){S.qw=1;face('nervous','Hurry!',1200)}if(f<=0)miss()}}
 function start(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume();
-S.mode='mc';
+if(!validateSetup())return;S.mode='mc';S.revision=$('activity').value==='revision';const minutes=Number(S.revision?$('revision-duration').value:$('duration').value);
 stopMusic();try{SONG.currentTime=0}catch(e){}
-Object.assign(S,{wrun:0,w10:0,qw:0,sc:0,co:0,wr:0,st:0,bs:0,step:0,qt:LV[S.lv].qt,endT:Date.now()+60000});
+Object.assign(S,{wrun:0,w10:0,qw:0,sc:0,co:0,wr:0,st:0,bs:0,step:0,revealed:0,resolved:false,minutes,qt:S.revision?0:LV[S.lv].qt,endT:minutes?Date.now()+minutes*60000:0});$('revision-tools').hidden=!S.revision;$('timer-label').textContent=minutes?'TIME LEFT':'REVISION';$('tm').classList.toggle('untimed',!minutes);$('score-label').textContent=S.revision?'CORRECT':'SCORE / 300';
 $('m').hidden=$('e').hidden=true;$('g').hidden=false;document.body.classList.add('is-playing');window.scrollTo(0,0);hud();say('','');nq();face('happy','Let\'s play!');clearInterval(iv);iv=setInterval(tick,100);tick();play()}
-function end(){clearInterval(iv);let b=0;const tot=S.co+S.wr;if(S.wr==0&&S.co>=5)b=50;S.sc+=b;const old=hs(),nw=S.sc>old;if(nw)hs(S.sc);
+function end(){if($('g').hidden)return;if(S.revision){endRevision();return}clearInterval(iv);let b=0;const tot=S.co+S.wr;if(S.wr==0&&S.co>=5)b=50;S.sc+=b;const old=hs(),nw=S.sc>old;if(nw)hs(S.sc);
 $('g').hidden=true;$('e').hidden=false;document.body.classList.remove('is-playing');stopMusic();clearTimeout(faceT);$('fc').classList.remove('show');window.scrollTo(0,0);$('es').textContent=S.sc;const sp=S.sc>=SHARP;$('ef').src='faces/'+(sp?R(['hero','joy','excited']):S.sc>=SHARP/2?'think':'sad')+'.jpg';$('eh').innerHTML=sp?'You are <span class="sh">sharp ♯</span>':'You are <span class="fl">flat ♭</span>';$('rm').textContent=sp?'Great note reading!':'Keep practising. Score '+SHARP+' or more to be sharp.';$('eb').textContent=(b?'Perfect run bonus: +50. ':'')+(nw?'New high score!':'');
 $('ed').innerHTML=`<div>Correct<b>${S.co}</b></div><div>Accuracy<b>${tot?Math.round(S.co/tot*100):0}%</b></div><div>Best combo<b>${S.bs}</b></div><div>High score<b>${Math.max(old,S.sc)}</b></div>`}
-function menu(){clearInterval(iv);stopMusic();clearTimeout(faceT);$('fc').classList.remove('show');document.body.classList.remove('is-playing');$('m').hidden=false;$('e').hidden=$('g').hidden=true;window.scrollTo(0,0);info()}
-function info(){$('ip').textContent='Read notes, recognise symbols and learn musical words. Play against the clock with music throughout your round. Score '+SHARP+' in 1 minute to be sharp.';$('ld').textContent=({easy:'Foundation pace: 4 choices, no wrong-answer time penalty.',medium:'4 choices. Wrong answers cost 2 seconds.',hard:'6 choices and 10 seconds per question. Wrong answers cost 2 seconds.',expert:'6 choices and 6 seconds per question. Wrong answers cost 3 seconds.',adaptive:'Rhythm questions get harder every 4 correct answers. Other topics follow the selected learning focus.'})[S.lv];$('bs').textContent='High score: '+hs()}
+function menu(){clearInterval(iv);stopMusic();clearTimeout(faceT);$('fc').classList.remove('show');document.body.classList.remove('is-playing');$('m').hidden=false;$('worksheet-view').hidden=$('e').hidden=$('g').hidden=true;window.scrollTo(0,0);info()}
+function info(){$('ip').textContent='Read notes, recognise symbols and learn musical words. Choose a 1-, 2- or 4-minute challenge, revise at your own pace, or make a worksheet. Score '+SHARP+' in a timed challenge to be sharp.';$('ld').textContent=({easy:'Foundation pace: 4 choices, no wrong-answer time penalty.',medium:'4 choices. Wrong answers cost 2 seconds in challenges.',hard:'6 choices and 10 seconds per question in challenges.',expert:'6 choices and 6 seconds per question in challenges.',adaptive:'Rhythm questions get harder every 4 correct answers. Other topics follow the selected learning focus.'})[S.lv];$('bs').textContent='Challenge high score ('+$('duration').value+' min): '+hs()}
 function sel(id,key){$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(c=>c.classList.toggle('sel',c==b));S[key]=b.dataset.v;info()}}
-sel('lv','lv');$('sb').onclick=start;$('pa').onclick=start;$('mn').onclick=menu;
+sel('lv','lv');$('sb').onclick=()=>{$('activity').value==='worksheet'?createWorksheet():start()};$('pa').onclick=start;$('mn').onclick=menu;
 document.addEventListener('keydown',e=>{if(S.mode=='mc'&&!$('g').hidden&&/^[1-6]$/.test(e.key)){const b=$('an').children[+e.key-1];if(b&&!b.disabled)b.click()}});
-initCurriculum();info();
+initCurriculum();initRevision();info();
 </script></body></html>

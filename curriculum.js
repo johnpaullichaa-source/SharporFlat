@@ -169,14 +169,15 @@ function termQuestion(kind) {
   }
   return q;
 }
-function curriculumQuestion() {
-  const topic=document.getElementById('topic').value;
+function curriculumQuestion(topicOverride) {
+  const topic=topicOverride||(S.revision?R(selectedPracticeTopics()):document.getElementById('topic').value);
   const chosen=topic==='mixed'?R(['pitch','rhythm','symbols','dynamics','expression','vocabulary']):topic;
-  if(chosen==='pitch')return pitchQuestion();
-  if(['dynamics','expression','vocabulary'].includes(chosen))return termQuestion(chosen);
-  if(chosen==='symbols')return symQ(S.mode==='mc');
-  if(Math.random()<.2)return beamQ(S.mode==='mc');
-  return rhythmQuestion();
+  let q;
+  if(chosen==='pitch')q=pitchQuestion();
+  else if(['dynamics','expression','vocabulary'].includes(chosen))q=termQuestion(chosen);
+  else if(chosen==='symbols')q=symQ(true);
+  else q=Math.random()<.2?beamQ(true):rhythmQuestion();
+  q.kind=q.kind||chosen;return q;
 }
 function studyNoteSVG(v,rest=false) {
   let base=v;
@@ -253,7 +254,7 @@ function renderGlossary() {
 function initCurriculum() {
   document.getElementById('reaction-slot').append(document.getElementById('fc'));
   document.getElementById('topic').onchange=()=>{
-    document.getElementById('pitch-settings').hidden=!['mixed','pitch'].includes(document.getElementById('topic').value);info();
+    syncActivity();info();
   };
   ['stage','clef','octaves'].forEach(id=>document.getElementById(id).onchange=()=>{renderGlossary();info()});
   document.getElementById('glossary-search').oninput=renderGlossary;
@@ -262,8 +263,8 @@ function initCurriculum() {
   document.getElementById('audio-retry').onclick=play;
   renderGlossary();
   window.render_game_to_text=()=>JSON.stringify({
-    phase:!$('g').hidden?'playing':!$('e').hidden?'results':'menu',
+    phase:!$('worksheet-view').hidden?'worksheet':!$('g').hidden?'playing':!$('e').hidden?'results':'menu',
     score:S.sc||0,topic:$('topic').value,prompt:S.q?.p,
-    choices:S.q?.o?.map(x=>x.txt||x.v),clef:S.q?.clef,remaining:Math.max(0,(S.endT-Date.now())/1000)
+    choices:S.q?.o?.map(x=>x.txt||x.v),clef:S.q?.clef,remaining:S.endT?Math.max(0,(S.endT-Date.now())/1000):null
   });
 }

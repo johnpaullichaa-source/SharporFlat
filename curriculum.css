@@ -85,3 +85,26 @@ html{scroll-padding-top:120px}
 .note-study-symbol:only-child{width:72px}
 .note-study-symbol svg{width:100%;height:56px;color:var(--tx)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+#practice-topics,#worksheet-settings{border:2px solid #cba978;border-radius:10px;padding:var(--space-3);margin:0;display:grid;gap:var(--space-2)}
+#practice-topics legend,#worksheet-settings legend{font-weight:800;font-size:var(--text-sm)}
+.topic-actions{display:flex;gap:var(--space-2)}.topic-actions .btn{min-height:44px;font-size:var(--text-sm)}
+#worksheet-count{width:100%;font-size:var(--text-base);min-height:44px}
+.form-error{font-size:var(--text-sm);color:#ad2019;font-weight:800}.form-error:empty{display:none}
+#tm.untimed{font-size:20px;min-height:40px;display:flex;align-items:center;justify-content:center}
+#revision-tools{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
+#revision-explanation{background:#fff;border:2px solid #cba978;border-radius:10px;padding:var(--space-3);text-align:left;font-size:var(--text-sm)}
+#revision-explanation:empty{display:none}
+#revision-tools .btn{min-height:44px}#revision-tools .btn.go{margin-top:0}
+.opts .btn.correct-option{border-color:#08783d;background:#daf3df;color:#154825}
+.opts .btn:disabled{opacity:.75;cursor:default}.opts .btn.correct-option:disabled{opacity:1}
+.worksheet-toolbar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;gap:var(--space-2);align-items:center;background:var(--sf);padding-block:var(--space-2)}
+.worksheet-toolbar .btn.go{font-family:inherit;font-size:var(--text-base);margin:0;padding:var(--space-2);min-height:48px}
+.worksheet-card{margin-top:var(--space-4);padding:var(--space-3);border:2px solid var(--bd);border-radius:12px;background:#fffef8}
+.worksheet-card h3{font-size:var(--text-base);margin:0 0 var(--space-2);line-height:1.4}
+.worksheet-visual{font-size:var(--text-base);line-height:1.5;text-align:center;padding:var(--space-2) 0}
+.worksheet-visual svg{width:100%;height:120px}
+.worksheet-options{font-size:var(--text-sm);padding-left:24px;margin:var(--space-2) 0 0}
+.worksheet-options li{padding:var(--space-1);line-height:1.4}
+.worksheet-options svg{height:64px;width:110px;max-width:100%}
+#pdf-ready a{color:#075d78;text-decoration:underline}
+#pdf-status{font-size:var(--text-sm);margin-block:var(--space-2)}

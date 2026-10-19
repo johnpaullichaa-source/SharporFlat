@@ -1,6 +1,6 @@
 # Sharp or Flat: learning content
 
-The game is a supplementary notation and music-vocabulary practice resource, not an assessment of the full NSW syllabus. The current single source of truth is `index.html`; the legacy `Sharp or Flat.html` redirects there. Additional questions and the study glossary are in `curriculum.js`; responsive additions are in `curriculum.css`.
+The game is a supplementary notation and music-vocabulary practice resource, not an assessment of the full NSW syllabus. The entry point is `index.html`; the legacy `Sharp or Flat.html` redirects there. Additional questions and the study glossary are in `curriculum.js`; revision and worksheet tools are in `revision.js`; responsive additions are in `curriculum.css`.
 
 ## Practice topics
 
@@ -19,6 +19,16 @@ The study section includes a searchable reference chart of semibreve, minim, cro
 ## Arcade round
 
 The piano tiles have been replaced with a framed question screen, with answer choices directly underneath. The sticky header keeps the timer, score and Back button visible while scrolling; a second Back button is below the answer area. The sharp target is 300 points. Mozart plays continuously throughout the timed round and stops on either Back button or the results screen. Replay starts the track from the beginning.
+
+Challenge rounds may last 1, 2 or 4 minutes. High scores are separate for each duration and difficulty; the original one-minute records are preserved. The 300-point sharp threshold remains the same for all three durations.
+
+## Revision and worksheets
+
+Revision allows any combination of the six practice topics, with either no timer or a 1-, 2- or 4-minute session timer. Revision removes per-question deadlines and time penalties at every difficulty. Correct answers and revealed answers stay on screen with an explanation until the student chooses Next question. Finish revision opens an attempt-based summary; revision never overwrites challenge high scores.
+
+Worksheet mode uses the selected topics, Stage 4/5 learning focus, difficulty and clef settings to create 1–20 multiple-choice questions. Topic coverage is balanced; small topic banks can repeat concepts. The preview freezes the questions and choice order, so the downloaded PDF and its optional separate answer-key pages match it. Pitch questions retain the staff-plus-middle-C restriction.
+
+PDFs are generated in the student's browser without a backend or student-data upload. The bundled jsPDF library and Lato fonts load only when a worksheet is downloaded. A4 output contains readable drawn notation, embedded fonts, blank student details and clickable source footnotes; answers are excluded unless the separate answer-key setting is checked. iPhone users can use the PDF viewer's Share menu to save or print. Third-party licences are included in `vendor/`.
 
 ## NSW alignment
 
