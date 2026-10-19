@@ -122,6 +122,7 @@ async function svgPNG(source){
   const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
   const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);
   const image=new Image();
+  image.crossOrigin='anonymous';
   await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('A music symbol could not be drawn. Please try again.'));image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});
   ctx.drawImage(image,0,0,width,height);
   return {data:canvas.toDataURL('image/png'),ratio:box[2]/box[3]};
