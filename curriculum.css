@@ -1,0 +1,36 @@
+/* Extend the existing festival design without replacing its palette or artwork. */
+:root{--text-xs:clamp(.75rem,.72rem + .15vw,.875rem);--text-sm:clamp(.875rem,.85rem + .15vw,1rem);--text-base:clamp(1rem,.98rem + .1vw,1.1rem);--text-lg:clamp(1.125rem,1.1rem + .1vw,1.3rem);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--ok:#08783d;--mg:#08778a;--sh:#08778a}
+*,*:before,*:after{box-sizing:border-box}
+.w{width:calc(100% - 28px);max-width:476px}
+.curriculum-fields{margin-block:var(--space-4);display:grid;gap:var(--space-3)}
+.curriculum-fields label,.curriculum-fields legend{font-weight:800;font-size:var(--text-sm)}
+select{width:100%;font:inherit;color:var(--tx);background:#fff;border:3px solid var(--bd);border-radius:10px;padding:var(--space-2);min-height:44px}
+select:focus-visible,summary:focus-visible{outline:3px solid var(--sh);outline-offset:3px}
+.curriculum-fields label>select{display:block;margin-top:var(--space-1)}
+#pitch-settings{border:2px solid #cba978;border-radius:10px;padding:var(--space-2);margin:0;display:grid;gap:var(--space-2)}
+.check{display:flex;align-items:center;gap:var(--space-2)}.check input{flex:none;width:20px;height:20px}
+.setting-note{font-size:var(--text-xs)}
+.study{margin-top:var(--space-4);border-top:2px solid #cba978;padding-top:var(--space-3)}
+.study summary{cursor:pointer;font-weight:800;font-size:var(--text-base);padding-block:var(--space-2)}
+.study input{width:100%;margin-block:var(--space-2);font-size:var(--text-base)}
+#glossary-list section{margin-top:var(--space-4)}
+#glossary-list h3{font-size:var(--text-lg);color:#a82018;margin:0 0 var(--space-2)}
+#glossary-list dl{padding-block:var(--space-2);border-bottom:1px solid #dcc79f;margin:0}
+#glossary-list dt{font-weight:800}#glossary-list dd{margin:var(--space-1) 0 0;line-height:1.5;color:var(--t2)}
+.source-url{display:block;font-size:var(--text-xs);overflow-wrap:anywhere}
+.study a{color:#075d78;text-decoration:underline}
+.study p{margin-block:var(--space-2)}
+.definition{font-size:var(--text-base);line-height:1.5;padding:var(--space-3) var(--space-2);color:var(--tx)}
+.opts.long-options{grid-template-columns:1fr!important}
+.opts .btn{min-height:44px;overflow-wrap:anywhere;line-height:1.35}
+#st .pitch-svg{height:170px;width:100%}
+#quit{margin-bottom:var(--space-2);padding:var(--space-1) var(--space-2);font-size:var(--text-xs);min-height:32px}
+#g{position:relative}
+#fc{position:absolute;top:var(--space-3);right:var(--space-2)}
+#fc:not(.show){visibility:hidden}
+#hn{font-size:var(--text-xs);line-height:1.5}
+.btn.go{background:#c92b22}.btn.sel{background:var(--pl)}
+#tm{background:#f6b820}
+#cb{background:#08778a}#sc{background:#c92b22}
+@media(max-height:850px){.bd{height:192px}.ks{height:58px}.ks b{height:38px}#st .pitch-svg{height:145px}}
+@media(prefers-reduced-motion:reduce){.crew img{animation:none}#rw,#fc{transition:none}}
