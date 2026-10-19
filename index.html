@@ -95,7 +95,7 @@ input{border:3px solid var(--bd);background:#fff}
 .crew img:nth-child(2){animation-delay:.3s}.crew img:nth-child(3){animation-delay:.6s}.crew img:nth-child(4){animation-delay:.9s}
 @keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
 </style>
-<link rel="stylesheet" href="curriculum.css?v=20261020-arcade2">
+<link rel="stylesheet" href="curriculum.css?v=20261020-study3">
 </head><body>
 <div class="w">
 <div id="m">
@@ -103,14 +103,13 @@ input{border:3px solid var(--bd);background:#fff}
 <div class="hero"><img src="faces/hero.jpg" alt="Sharp or Flat host"></div>
 <div class="crew"><img src="faces/joy.jpg" alt=""><img src="faces/think.jpg" alt=""><img src="faces/surprise.jpg" alt=""><img src="faces/furious.jpg" alt=""></div>
 <p id="ip"></p>
-<h2>Game mode</h2>
-<div class="g2" id="mo"><button class="btn sel" data-v="type">Type it in</button><button class="btn" data-v="mc">Multiple choice</button></div>
+<p class="mode-note">Multiple-choice music challenge</p>
 <h2>Level</h2>
 <div class="lv" id="lv"><button class="btn sel" data-v="easy">Easy</button><button class="btn" data-v="medium">Medium</button><button class="btn" data-v="hard">Hard</button><button class="btn" data-v="expert">Expert</button><button class="btn" data-v="adaptive">Adaptive</button></div>
 <p id="ld"></p>
 <div class="curriculum-fields">
 <label>Practice topic<select id="topic">
-<option value="mixed">Mixed music quiz</option><option value="pitch">Note identification · G2–F5</option>
+<option value="mixed">Mixed music quiz</option><option value="pitch">Note identification · staff + middle C</option>
 <option value="rhythm">Note values and rhythm</option><option value="symbols">Music symbols</option>
 <option value="dynamics">Dynamics</option><option value="expression">10 expressive techniques</option>
 <option value="vocabulary">Elements of music · definitions</option>
@@ -119,17 +118,16 @@ input{border:3px solid var(--bd);background:#fff}
 <fieldset id="pitch-settings"><legend>Note-reading settings</legend>
 <label>Clef<select id="clef"><option value="both">Treble and bass</option><option value="treble">Treble only</option><option value="bass">Bass only</option></select></label>
 <label class="check"><input id="octaves" type="checkbox">Include octave numbers in answers</label>
-<p class="setting-note">Natural notes G2–F5 inclusive in either clef, including ledger lines. Middle C is C4. Turn on octave numbers for extra challenge.</p>
+<p class="setting-note">Only notes on the five-line staff, plus middle C (C4). Treble: E4–F5 plus C4. Bass: G2–A3 plus C4. No other ledger-line notes. Turn on octave numbers for extra challenge.</p>
 </fieldset>
 </div>
 <p id="bs" style="font-weight:700;color:var(--tx)"></p>
 <button class="btn go" id="sb">Start</button>
 <details class="study"><summary>Study the words and symbols</summary>
-<p>Original student-friendly explanations grouped by the six elements of music. The learning focus above controls foundation and extension vocabulary.</p>
-<label for="glossary-search">Find a word or meaning</label><input id="glossary-search" type="search" placeholder="Try timbre, legato or rhythm">
-<p id="glossary-count" role="status"></p><div id="glossary-list"></div>
-<p>Note names: treble staff lines are E4, G4, B4, D5, F5; bass staff lines are G2, B2, D3, F3, A3. Read the spaces and ledger lines by continuing the A–G sequence.</p>
-<p>Note values use crotchet (quarter-note) beats: semibreve = 4, minim = 2, crotchet = 1, quaver = ½ and semiquaver = ¼. Two joined quavers or four joined semiquavers total 1 crotchet beat.</p>
+<p>Study note names, symbols and values, then explore the six elements of music. The learning focus above controls foundation and extension vocabulary.</p>
+<label for="glossary-search">Find a word or meaning</label><input id="glossary-search" type="search" placeholder="Try crotchet, timbre or legato">
+<p id="glossary-count" role="status"></p><div id="note-study"></div><div id="glossary-list"></div>
+<p>Pitch names: treble staff lines are E4, G4, B4, D5, F5; its spaces are F4, A4, C5, E5. Bass staff lines are G2, B2, D3, F3, A3; its spaces are A2, C3, E3, G3. Middle C (C4) is the only ledger-line pitch used in the quiz.</p>
 </details>
 <details class="study"><summary>NSW syllabus alignment and sources</summary>
 <p>This supplementary literacy game uses the NSW Music 7–10 Syllabus (2024), implemented from 2026. Stage 4 is Years 7–8; Stage 5 is Years 9–10. Foundation/extension groupings here are teaching choices, not a prescribed NESA word list.</p>
@@ -139,6 +137,7 @@ input{border:3px solid var(--bd);background:#fff}
 <p><a href="https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/outcomes" target="_blank" rel="noopener noreferrer">NESA: Stage 4 and 5 outcomes</a><span class="source-url">https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/outcomes</span></p>
 <p><a href="https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/glossary" target="_blank" rel="noopener noreferrer">NESA: music glossary</a><span class="source-url">https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/glossary</span></p>
 <p><a href="https://pressbooks.nebraska.edu/openmusictheory/chapter/clefs/" target="_blank" rel="noopener noreferrer">Open Music Theory: reading clefs</a><span class="source-url">https://pressbooks.nebraska.edu/openmusictheory/chapter/clefs/</span></p>
+<p><a href="https://pressbooks.nebraska.edu/openmusictheory/chapter/rhythmic-rest-values/" target="_blank" rel="noopener noreferrer">Open Music Theory: note names, values and rests</a><span class="source-url">https://pressbooks.nebraska.edu/openmusictheory/chapter/rhythmic-rest-values/</span></p>
 <p><a href="https://pressbooks.nebraska.edu/openmusictheory/chapter/other-aspects-of-notation/" target="_blank" rel="noopener noreferrer">Open Music Theory: dynamics and articulation</a><span class="source-url">https://pressbooks.nebraska.edu/openmusictheory/chapter/other-aspects-of-notation/</span></p>
 <p><a href="https://www.allclassical.org/music-terminology-101-expressive-terms/" target="_blank" rel="noopener noreferrer">All Classical: expressive terms</a><span class="source-url">https://www.allclassical.org/music-terminology-101-expressive-terms/</span></p>
 </details>
@@ -171,13 +170,13 @@ input{border:3px solid var(--bd);background:#fff}
 <p id="eb" style="font-weight:700;color:var(--mg)"></p>
 <div class="st" id="ed"></div>
 <button class="btn go" id="pa">Play again</button>
-<button class="btn" id="mn" style="width:100%;margin-top:8px">Change mode or level</button>
+<button class="btn" id="mn" style="width:100%;margin-top:8px">Change topic or level</button>
 </div>
 </div>
 <div id="fc" aria-hidden="true"><img alt=""><span></span></div>
 <audio id="song" src="audio/song.mp3" preload="auto" loop></audio>
 <p id="audio-notice" role="status" hidden>Music could not start. <button id="audio-retry" class="btn">Play music</button></p>
-<script src="curriculum.js?v=20261020-arcade2"></script>
+<script src="curriculum.js?v=20261020-study3"></script>
 <script>
 const SHARP=300; // score needed to be sharp
 const TUNE=[64,64,65,67,67,65,64,62,60,60,62,64,64,62,62,64,64,65,67,67,65,64,62,60,60,62,64,62,60,60];
@@ -185,7 +184,7 @@ const $=i=>document.getElementById(i),R=a=>a[Math.floor(Math.random()*a.length)]
 const NM={4:['whole','semibreve'],2:['half','minim'],1:['quarter','crotchet'],.5:['eighth','quaver'],.25:['sixteenth','semiquaver'],3:['dotted half','dotted minim'],1.5:['dotted quarter','dotted crotchet']};
 const LV={easy:{t:0,pen:0,o:4,qt:0,d:'Whole, half and quarter notes. No time penalty.'},medium:{t:1,pen:2,o:4,qt:0,d:'Adds eighth and sixteenth notes and rests. A wrong answer costs 2 seconds.'},hard:{t:2,pen:2,o:6,qt:10,d:'Adds dotted notes and beat sums. 6 choices and 10 seconds per question.'},expert:{t:3,pen:3,o:6,qt:6,d:'Adds bars with a missing note and picture questions. 6 seconds per question.'},adaptive:{t:0,pen:2,o:4,qt:0,d:'Starts easy and gets harder every 4 correct answers.'}};
 const NV=[[4,2,1],[4,2,1,.5,.25],[4,2,1,.5,.25,3,1.5],[4,2,1,.5,.25,3,1.5]],RV=[4,2,1,.5,.25],ALL=[4,2,1,.5,.25,3,1.5];
-let S={mode:'type',lv:'easy'},AC,rows=[],lanes=[],iv;
+let S={mode:'mc',lv:'easy'},AC,iv;
 const cap=s=>s[0].toUpperCase()+s.slice(1);
 const lab=s=>{const n=NM[s.v];return cap(n[0])+(s.t=='r'?' rest':' note')+' ('+n[1]+(s.t=='r'?' rest':'')+')'};
 const norm=s=>s.toLowerCase().replace(/notes?|signs?$/g,'').replace(/[^a-z0-9]/g,'');
@@ -273,18 +272,15 @@ function good(){const m=Math.min(5,1+(S.st/3|0)),p=10*m;S.st++;S.bs=Math.max(S.b
 S.wrun=0;if(S.st%3==0)face(R(['excited','joy','hero']),S.st+' in a row!');else if(S.co==1)face('happy','Nice start!');S.step++;hud();say('Correct! +'+p+(m>1?' (x'+m+' combo)':''),'var(--ok)');nq()}
 function bad(msg){S.wr++;S.wrun=(S.wrun||0)+1;if(msg.startsWith('Time'))face(R(['shocked','surprise']),'Too slow!');else face(S.wrun>=3?R(['angry','furious']):S.wrun==2?R(['worried','sad']):'unsure',S.wrun>=3?'Focus!':S.wrun==2?'Hmm...':'Not that one');S.st=0;S.endT-=LV[S.lv].pen*1000;buzz();hud();say(msg+(LV[S.lv].pen?' -'+LV[S.lv].pen+'s':''),'var(--no)')}
 function miss(){bad("Time's up!");nq()}
-function check(v){const q=S.q;if(q.kind)return q.nm.includes(wordKey(v));const n=pn(v);if(n!==null&&typeof q.a==='number')return Math.abs(n-q.a)<1e-9;return!!q.nm&&q.nm.includes(norm(v))}
 function nq(){const q=S.q=gen();$('st').innerHTML=q.svg||(q.syms.length?draw(q.syms,q.gap):'');$('pr').textContent=q.p;$('hn').textContent=q.hint||(q.svg?'':tier()<2?'Hint: a quarter note (crotchet) = 1 beat':'');
-S.qw=0;S.qStart=Date.now();S.idle=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';$('answer-label').textContent=S.mode==='mc'?'CHOOSE YOUR ANSWER':'TYPE YOUR ANSWER';
-if(S.mode=='mc'){a.className='opts'+(q.longOptions?' long-options':'');a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
-else{a.className='';a.innerHTML='<div class="row"><input id="in" type="text" autocomplete="off" aria-label="Your answer" placeholder="Type your answer"><button class="btn go" style="margin:0;width:auto;font-size:16px;padding:8px 16px" id="en">Enter</button></div><div id="er"></div>';
-$('en').onclick=sub;$('in').onkeydown=e=>{if(e.key=='Enter')sub();else $('er').textContent=''};$('in').focus({preventScroll:true})}}
-function sub(){const v=$('in').value.trim();if(!v){$('er').textContent='Enter an answer first';return}if(check(v))good();else{bad('Not quite, try again');$('in').value='';$('in').focus()}}
+S.qw=0;S.qStart=Date.now();S.idle=0;S.qEnd=S.qt?Date.now()+S.qt*1000:0;$('tbw').style.visibility=S.qt?'visible':'hidden';const a=$('an');a.innerHTML='';$('answer-label').textContent='CHOOSE YOUR ANSWER';
+a.className='opts'+(q.longOptions?' long-options':'');a.style.gridTemplateColumns=`repeat(${q.o.length>4?3:2},1fr)`;q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='btn';b.innerHTML=o.sym?draw([o.sym]):o.txt;b.onclick=()=>pickO(o,b);a.appendChild(b)})}
 function pickO(o,b){if(o.v==S.q.a)good();else{bad('Not quite, try again');b.classList.add('x');b.disabled=true}}
 function tick(){const now=Date.now(),l=S.endT-now;if(l<=0){end();return}const s=Math.ceil(l/1000);$('tm').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('tm').style.color=s<=10?'var(--no)':'';const id=now-S.qStart;if(S.idle==0&&id>4000){S.idle=1;face('think','Think it through...',1500)}else if(S.idle==1&&id>9000){S.idle=2;face('bored','Still waiting...',1500)}
 if(s==10&&!S.w10){S.w10=1;face('nervous','10 seconds left!',2000)}
 if(S.qEnd){const f=(S.qEnd-now)/(S.qt*1000);$('tb').style.width=Math.max(0,f*100)+'%';if(f<.3&&!S.qw){S.qw=1;face('nervous','Hurry!',1200)}if(f<=0)miss()}}
 function start(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume();
+S.mode='mc';
 stopMusic();try{SONG.currentTime=0}catch(e){}
 Object.assign(S,{wrun:0,w10:0,qw:0,sc:0,co:0,wr:0,st:0,bs:0,step:0,qt:LV[S.lv].qt,endT:Date.now()+60000});
 $('m').hidden=$('e').hidden=true;$('g').hidden=false;document.body.classList.add('is-playing');window.scrollTo(0,0);hud();say('','');nq();face('happy','Let\'s play!');clearInterval(iv);iv=setInterval(tick,100);tick();play()}
@@ -294,7 +290,7 @@ $('ed').innerHTML=`<div>Correct<b>${S.co}</b></div><div>Accuracy<b>${tot?Math.ro
 function menu(){clearInterval(iv);stopMusic();clearTimeout(faceT);$('fc').classList.remove('show');document.body.classList.remove('is-playing');$('m').hidden=false;$('e').hidden=$('g').hidden=true;window.scrollTo(0,0);info()}
 function info(){$('ip').textContent='Read notes, recognise symbols and learn musical words. Play against the clock with music throughout your round. Score '+SHARP+' in 1 minute to be sharp.';$('ld').textContent=({easy:'Foundation pace: 4 choices, no wrong-answer time penalty.',medium:'4 choices. Wrong answers cost 2 seconds.',hard:'6 choices and 10 seconds per question. Wrong answers cost 2 seconds.',expert:'6 choices and 6 seconds per question. Wrong answers cost 3 seconds.',adaptive:'Rhythm questions get harder every 4 correct answers. Other topics follow the selected learning focus.'})[S.lv];$('bs').textContent='High score: '+hs()}
 function sel(id,key){$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(c=>c.classList.toggle('sel',c==b));S[key]=b.dataset.v;info()}}
-sel('mo','mode');sel('lv','lv');$('sb').onclick=start;$('pa').onclick=start;$('mn').onclick=menu;
+sel('lv','lv');$('sb').onclick=start;$('pa').onclick=start;$('mn').onclick=menu;
 document.addEventListener('keydown',e=>{if(S.mode=='mc'&&!$('g').hidden&&/^[1-6]$/.test(e.key)){const b=$('an').children[+e.key-1];if(b&&!b.disabled)b.click()}});
 initCurriculum();info();
 </script></body></html>

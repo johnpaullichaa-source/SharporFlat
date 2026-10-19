@@ -5,14 +5,16 @@ The game is a supplementary notation and music-vocabulary practice resource, not
 ## Practice topics
 
 - Mixed quiz: selects across all six question families.
-- Pitch: all 21 natural notes G2–F5 inclusive, shown in either treble or bass clef (42 combinations). Students may practise either clef or both. Optional octave-number answers use scientific pitch notation, with middle C = C4. Accidentals are not part of this pitch bank.
+- Pitch: only notes on the five-line staff plus middle C (C4). The treble pool is E4–F5 plus C4; bass is G2–A3 plus C4 (10 pitches per clef). No other out-of-staff notes or ledger-line pitches are used. Students may practise either clef or both. Optional octave-number choices use scientific pitch notation. Accidentals are not part of this pitch bank.
 - Rhythm: existing note/rest values, joined notes, sums and missing beats. Values are expressed in crotchet beats.
 - Symbols: the existing identification bank.
 - Dynamics: p, mp, mf, f, cresc. and decresc.; crescendo/decrescendo hairpins are included. Stage 5 also includes pp and ff.
 - Expressive techniques: staccato, legato, tenuto, accent, marcato, fermata, pizzicato, arco, tremolo and vibrato.
 - Vocabulary: original plain-language definitions across all six elements.
 
-Both typed-answer and multiple-choice modes work with all topics. Topic and learning focus are independent of the original difficulty/timer controls. The Stage 4/5 split is a suggested classroom progression, not a mandatory NESA allocation of terms. Stage 5 retains foundational content.
+All topics use multiple-choice answers; the typed-answer option has been removed. Topic and learning focus are independent of difficulty/timer controls. The Stage 4/5 split is a suggested classroom progression, not a mandatory NESA allocation of terms. Stage 5 retains foundational content.
+
+The study section includes a searchable reference chart of semibreve, minim, crotchet, quaver and semiquaver names (with American equivalents), their written note/rest symbols and durations in crotchet beats, plus dotted minims/crotchets and joined-note groups. ([Open Music Theory: Rhythmic and Rest Values](https://pressbooks.nebraska.edu/openmusictheory/chapter/rhythmic-rest-values/))
 
 ## Arcade round
 

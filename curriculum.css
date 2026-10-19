@@ -70,3 +70,18 @@ select:focus-visible,summary:focus-visible{outline:3px solid var(--sh);outline-o
 #fb{text-align:center;font-size:var(--text-sm)}
 #audio-notice{position:fixed;z-index:40;left:50%;bottom:var(--space-2);transform:translateX(-50%);width:calc(100% - 40px);max-width:430px;background:var(--sf);color:var(--tx);border:3px solid var(--bd);border-radius:10px;padding:var(--space-2);text-align:center;font-size:var(--text-sm)}
 html{scroll-padding-top:120px}
+.mode-note{font-size:var(--text-sm);font-weight:800;text-align:center;padding-block:var(--space-2)}
+#note-study h3{font-size:var(--text-lg);color:#a82018;margin:var(--space-4) 0 var(--space-2)}
+.note-values-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:var(--text-sm);margin-block:var(--space-3)}
+.note-values-table thead th{text-align:left;background:#f6b820;padding:var(--space-2) var(--space-1);border-bottom:2px solid var(--bd)}
+.note-values-table thead th:first-child{width:82px}
+.note-values-table thead th:last-child{width:66px}
+.note-values-table tbody td,.note-values-table tbody th{vertical-align:middle;border-bottom:1px solid #dcc79f;padding:var(--space-2) var(--space-1);text-align:left}
+.note-values-table tbody th{font-weight:500;overflow-wrap:anywhere}
+.note-values-table tbody th b{display:block;font-weight:800}
+.note-values-table tbody th span{display:block;font-size:var(--text-xs);color:var(--t2);margin-top:var(--space-1)}
+.note-values-table tbody td:last-child{font-weight:800}
+.note-study-symbol{display:inline-flex;width:36px;height:56px;align-items:center;justify-content:center}
+.note-study-symbol:only-child{width:72px}
+.note-study-symbol svg{width:100%;height:56px;color:var(--tx)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}

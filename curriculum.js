@@ -95,9 +95,11 @@ const VOCABULARY = [
 const wordKey = s => String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
 const activeStage = () => document.getElementById('stage').value;
 const eligible = a => a.filter(e=>activeStage()!=='4'||e.stage===4);
-const pitchNames = Array.from({length:21},(_,i)=>{
-  const d=18+i; return 'CDEFGAB'[d%7]+Math.floor(d/7);
-}); // G2 (diatonic index 18) through F5 (38), inclusive.
+// The five staff lines and four intervening spaces, plus middle C only.
+const pitchPools = {
+  treble:['C4','E4','F4','G4','A4','B4','C5','D5','E5','F5'],
+  bass:['G2','A2','B2','C3','D3','E3','F3','G3','A3','C4']
+};
 
 function clefShape(clef) {
   // SVG paths avoid missing musical glyphs on iPhone or offline devices.
@@ -118,10 +120,10 @@ function pitchSVG(name,clef) {
 }
 function pitchQuestion() {
   const clef=document.getElementById('clef').value==='both'?R(['treble','bass']):document.getElementById('clef').value;
-  const name=R(pitchNames),oct=document.getElementById('octaves').checked;
-  const answer=oct?name:name[0],pool=oct?pitchNames:'CDEFGAB'.split('');
+  const name=R(pitchPools[clef]),oct=document.getElementById('octaves').checked;
+  const answer=oct?name:name[0],pool=oct?pitchPools[clef]:'CDEFGAB'.split('');
   return {kind:'pitch',syms:[],svg:pitchSVG(name,clef),p:`Name this note in the ${clef} clef.`,
-    hint:oct?'Include the octave number, e.g. C4 (middle C).':'Enter a letter A–G. Octave numbers are optional.',
+    hint:oct?'Choose the letter and octave number. Middle C = C4.':'Choose the note letter A–G.',
     a:answer,nm:oct?[wordKey(name)]:[name[0].toLowerCase(),wordKey(name)],
     pitch:name,clef,o:sh([answer,...sh(pool.filter(n=>n!==answer)).slice(0,optN()-1)]).map(v=>({v,txt:v}))};
 }
@@ -156,7 +158,7 @@ function termQuestion(kind) {
     q.hint=ELEMENTS[item.element][0];
   }else{
     q.p=definitionStyle?'What does this marking mean?':'Name this musical marking or technique.';
-    q.svg=markSVG(item,kind);q.hint=S.mode==='type'?'Type the term or its abbreviation.':'';
+    q.svg=markSVG(item,kind);q.hint='';
   }
   if(definitionStyle && kind!=='vocabulary'){
     q.a=item.def;
@@ -176,11 +178,62 @@ function curriculumQuestion() {
   if(Math.random()<.2)return beamQ(S.mode==='mc');
   return rhythmQuestion();
 }
+function studyNoteSVG(v,rest=false) {
+  let base=v;
+  if(v===3)base=2;
+  if(v===1.5)base=1;
+  let image=sym({t:rest?'r':'n',v:rest?base:v},40,2);
+  if(rest&&(v===3||v===1.5))image+='<circle cx="57" cy="32" r="2.3" fill="currentColor"/>';
+  return `<svg viewBox="0 0 80 70" role="img" aria-label="${cap(NM[v][1])}${rest?' rest':' note'}">${STF(80)}${image}</svg>`;
+}
+function studyBeamSVG(count) {
+  let image=STF(110);
+  for(let i=0;i<count;i++){
+    const x=20+i*(count===2?48:22);
+    image+=`<ellipse cx="${x}" cy="50" rx="6" ry="4.5" fill="currentColor" transform="rotate(-20 ${x} 50)"/><path d="M${x+5.5} 50V20" fill="none" stroke="currentColor" stroke-width="1.7"/>`;
+  }
+  const w=(count-1)*(count===2?48:22)+1;
+  image+=`<rect x="25" y="20" width="${w}" height="4" fill="currentColor"/>`;
+  if(count===4)image+=`<rect x="25" y="27" width="${w}" height="4" fill="currentColor"/>`;
+  return `<svg viewBox="0 0 110 70" role="img" aria-label="${count} joined ${count===2?'quavers':'semiquavers'}">${image}</svg>`;
+}
+function renderNoteStudy(search) {
+  const host=document.getElementById('note-study');
+  host.replaceChildren();
+  const entries=[4,2,1,.5,.25,3,1.5].map(v=>({
+    term:cap(NM[v][1]),other:cap(NM[v][0])+' note',v,
+    symbol:studyNoteSVG(v),rest:[4,2,1,.5,.25].includes(v)?studyNoteSVG(v,true):null
+  }));
+  entries.push(
+    {term:'2 joined quavers',other:'Two beamed eighth notes',v:1,symbol:studyBeamSVG(2)},
+    {term:'4 joined semiquavers',other:'Four beamed sixteenth notes',v:1,symbol:studyBeamSVG(4)}
+  );
+  const filtered=entries.filter(e=>!search||wordKey(e.term+' '+e.other+' '+fb(e.v)+' '+e.v+' note values names duration '+(e.rest?'rest silence':'')).includes(search));
+  if(!filtered.length)return 0;
+  const title=document.createElement('h3'),intro=document.createElement('p');
+  title.textContent='Note names, symbols and values';
+  intro.textContent='Count one crotchet (quarter note) as 1 beat. Each pair shows the note on the left and its matching rest on the right. Rests have the same duration but are silent. Values here use crotchet beats; other metres may use a different beat unit.';
+  host.append(title,intro);
+  const table=document.createElement('table');
+  table.className='note-values-table';
+  table.innerHTML='<caption class="sr-only">Note and rest reference chart</caption><thead><tr><th scope="col">Note / rest</th><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody></tbody>';
+  const body=table.querySelector('tbody');
+  filtered.forEach(e=>{
+    const row=document.createElement('tr'),symbols=document.createElement('td'),names=document.createElement('th'),value=document.createElement('td');
+    names.scope='row';
+    symbols.innerHTML=`<div class="note-study-symbol">${e.symbol}</div>${e.rest?`<div class="note-study-symbol">${e.rest}</div>`:''}`;
+    const name=document.createElement('b'),other=document.createElement('span');name.textContent=e.term;other.textContent=e.other;
+    names.append(name,other);value.textContent=fb(e.v);row.append(symbols,names,value);body.append(row);
+  });
+  const tip=document.createElement('p');tip.className='setting-note';tip.textContent='A dot adds half the original value: dotted minim = 3 beats; dotted crotchet = 1½ beats. The whole-bar rest uses the semibreve-rest sign and fills a complete bar, whatever its length.';
+  host.append(table,tip);
+  return filtered.length;
+}
 function renderGlossary() {
   const search=wordKey(document.getElementById('glossary-search').value);
   const container=document.getElementById('glossary-list');
   container.replaceChildren();
-  let count=0;
+  let count=renderNoteStudy(search);
   ELEMENTS.forEach(([name,def],index)=>{
     const entries=[...eligible(VOCABULARY).filter(x=>x.element===index),
       ...(index===4?[...eligible(DYNAMICS),...TECHNIQUES]:[])].filter(x=>!search||wordKey(x.term+' '+x.def+' '+(x.mark||'')).includes(search));
@@ -195,7 +248,7 @@ function renderGlossary() {
     });
     container.append(section);
   });
-  document.getElementById('glossary-count').textContent=count?`${count} terms shown`:'No matching terms. Try another word.';
+  document.getElementById('glossary-count').textContent=count?`${count} study entries shown`:'No matching terms. Try another word.';
 }
 function initCurriculum() {
   document.getElementById('reaction-slot').append(document.getElementById('fc'));
