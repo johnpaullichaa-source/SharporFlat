@@ -198,15 +198,15 @@ function renderGlossary() {
   document.getElementById('glossary-count').textContent=count?`${count} terms shown`:'No matching terms. Try another word.';
 }
 function initCurriculum() {
-  document.querySelector('.bd').append(document.getElementById('fc'));
+  document.getElementById('reaction-slot').append(document.getElementById('fc'));
   document.getElementById('topic').onchange=()=>{
     document.getElementById('pitch-settings').hidden=!['mixed','pitch'].includes(document.getElementById('topic').value);info();
   };
   ['stage','clef','octaves'].forEach(id=>document.getElementById(id).onchange=()=>{renderGlossary();info()});
   document.getElementById('glossary-search').oninput=renderGlossary;
-  document.getElementById('quit').onclick=()=>{
-    clearInterval(iv);clearTimeout(songT);SONG.pause();clearTimeout(faceT);document.getElementById('fc').classList.remove('show');menu();
-  };
+  document.getElementById('quit').onclick=menu;
+  document.getElementById('quit-bottom').onclick=menu;
+  document.getElementById('audio-retry').onclick=play;
   renderGlossary();
   window.render_game_to_text=()=>JSON.stringify({
     phase:!$('g').hidden?'playing':!$('e').hidden?'results':'menu',

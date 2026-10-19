@@ -14,6 +14,10 @@ The game is a supplementary notation and music-vocabulary practice resource, not
 
 Both typed-answer and multiple-choice modes work with all topics. Topic and learning focus are independent of the original difficulty/timer controls. The Stage 4/5 split is a suggested classroom progression, not a mandatory NESA allocation of terms. Stage 5 retains foundational content.
 
+## Arcade round
+
+The piano tiles have been replaced with a framed question screen, with answer choices directly underneath. The sticky header keeps the timer, score and Back button visible while scrolling; a second Back button is below the answer area. The sharp target is 300 points. Mozart plays continuously throughout the timed round and stops on either Back button or the results screen. Replay starts the track from the beginning.
+
 ## NSW alignment
 
 The NSW Music 7–10 Syllabus (2024) is implemented from 2026 and organises learning through Performing, Listening and Composing. ([NESA overview](https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/overview))
