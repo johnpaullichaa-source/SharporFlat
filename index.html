@@ -95,7 +95,7 @@ input{border:3px solid var(--bd);background:#fff}
 .crew img:nth-child(2){animation-delay:.3s}.crew img:nth-child(3){animation-delay:.6s}.crew img:nth-child(4){animation-delay:.9s}
 @keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
 </style>
-<link rel="stylesheet" href="curriculum.css?v=20261020-revision4">
+<link rel="stylesheet" href="curriculum.css?v=20261029-tracks">
 </head><body>
 <div class="w">
 <div id="m">
@@ -143,6 +143,13 @@ input{border:3px solid var(--bd);background:#fff}
 <p id="activity-help" class="setting-note"></p><p id="setup-error" role="status" class="form-error"></p>
 <p id="bs" style="font-weight:700;color:var(--tx)"></p>
 <button class="btn go" id="sb">Start</button>
+<button class="btn track-toggle" id="track-toggle" aria-expanded="false" aria-controls="track-panel">♪ Track list</button>
+<div id="track-panel" class="track-panel" hidden>
+<p class="setting-note">Choose the song that plays while you play the game.</p>
+<div id="track-list" class="track-list" role="radiogroup" aria-label="Game music"></div>
+<button type="button" class="btn" id="track-preview">▶ Preview</button>
+<p id="track-now" class="setting-note" role="status"></p>
+</div>
 <details class="study"><summary>Study the words and symbols</summary>
 <p>Study note names, symbols and values, then explore the six elements of music. The learning focus above controls foundation and extension vocabulary.</p>
 <label for="glossary-search">Find a word or meaning</label><input id="glossary-search" type="search" placeholder="Try crotchet, timbre or legato">
@@ -284,7 +291,17 @@ q={syms:[s],p:mc?'What is this '+k+' called?':'How many beats is this '+k+' wort
 return q}
 const SONG=$('song');let songT;
 let audioRun=0;
+const TRACKS=[{id:'theme',t:'Sharp or Flat theme',src:'audio/song.mp3'},{id:'training-season',t:'Training Season · Dua Lipa',src:'audio/training-season.mp3'},{id:'eye-of-the-tiger',t:'Eye of the Tiger · Survivor',src:'audio/eye-of-the-tiger.mp3'},{id:'all-star',t:'All Star · Smash Mouth',src:'audio/all-star.mp3'},{id:'never-gonna-give-you-up',t:'Never Gonna Give You Up · Rick Astley',src:'audio/never-gonna-give-you-up.mp3'},{id:'remember-the-name',t:'Remember the Name · Fort Minor',src:'audio/remember-the-name.mp3'},{id:'dont-stop-me-now',t:'Don’t Stop Me Now · Queen',src:'audio/dont-stop-me-now.mp3'},{id:'september',t:'September · Earth, Wind & Fire',src:'audio/september.mp3'},{id:'none',t:'No music',src:''}];
+let track=TRACKS[0];
+function setTrack(id){track=TRACKS.find(k=>k.id===id)||TRACKS[0];try{localStorage.setItem('sof_track',track.id)}catch(e){}previewStop();if(track.src)SONG.src=track.src;else SONG.removeAttribute('src');
+[...$('track-list').children].forEach(b=>{const on=b.dataset.v===track.id;b.classList.toggle('sel',on);b.setAttribute('aria-checked',on)});$('track-preview').disabled=!track.src;$('track-now').textContent='Game music: '+track.t}
+function previewStop(){SONG.pause();$('track-preview').textContent='▶ Preview'}
+function initTracks(){const l=$('track-list');TRACKS.forEach(k=>{const b=document.createElement('button');b.type='button';b.className='btn';b.dataset.v=k.id;b.setAttribute('role','radio');b.textContent=k.t;b.onclick=()=>setTrack(k.id);l.appendChild(b)});
+let saved;try{saved=localStorage.getItem('sof_track')}catch(e){}setTrack(saved);
+$('track-toggle').onclick=()=>{const p=$('track-panel'),open=p.hidden;p.hidden=!open;$('track-toggle').setAttribute('aria-expanded',open);if(!open)previewStop()};
+$('track-preview').onclick=()=>{if(!track.src)return;if(SONG.paused){SONG.volume=.8;const p=SONG.play();$('track-preview').textContent='⏸ Stop preview';if(p&&p.catch)p.catch(previewStop)}else previewStop()}}
 function play(){
+if(!track.src)return;
 const run=audioRun;SONG.volume=.8;const p=SONG.play();
 if(p&&p.then)p.then(()=>{if($('g').hidden){SONG.pause();return}if(run===audioRun)$('audio-notice').hidden=true}).catch(()=>{if(run===audioRun&&!$('g').hidden)$('audio-notice').hidden=false});
 }
@@ -320,5 +337,5 @@ function info(){$('ip').textContent='Read notes, recognise symbols and learn mus
 function sel(id,key){$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(c=>c.classList.toggle('sel',c==b));S[key]=b.dataset.v;info()}}
 sel('lv','lv');$('sb').onclick=()=>{$('activity').value==='worksheet'?createWorksheet():start()};$('pa').onclick=start;$('mn').onclick=menu;
 document.addEventListener('keydown',e=>{if(S.mode=='mc'&&!$('g').hidden&&/^[1-6]$/.test(e.key)){const b=$('an').children[+e.key-1];if(b&&!b.disabled)b.click()}});
-initCurriculum();initRevision();info();
+initCurriculum();initRevision();initTracks();info();
 </script></body></html>

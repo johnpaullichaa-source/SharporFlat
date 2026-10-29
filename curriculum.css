@@ -108,3 +108,11 @@ html{scroll-padding-top:120px}
 .worksheet-options svg{height:64px;width:110px;max-width:100%}
 #pdf-ready a{color:#075d78;text-decoration:underline}
 #pdf-status{font-size:var(--text-sm);margin-block:var(--space-2)}
+
+/* Track list: students choose the game music from the home page. */
+.track-toggle{width:100%;margin-top:var(--space-2)}
+.track-panel{margin-top:var(--space-2);padding:var(--space-3);border:2px solid #cba978;border-radius:10px;display:grid;gap:var(--space-2)}
+.track-list{display:grid;gap:var(--space-2)}
+.track-list .btn{text-align:left;min-height:44px;overflow-wrap:anywhere}
+.track-list .btn.sel:before{content:"♪ "}
+#track-preview{justify-self:start;min-height:44px}
